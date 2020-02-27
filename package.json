@@ -1,6 +1,6 @@
 {
   "name": "@crispcode/pushstore",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A store library with push notification on changes",
   "author": "Crisp Code ( contact@crispcode.ro )",
   "keywords": [ "pushstore", "store", "pubsub", "subscribe", "configuration", "data store", "smart object", "push store", "events", "smart events", "change notification", "notification" ],

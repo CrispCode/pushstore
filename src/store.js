@@ -45,7 +45,7 @@ class Store {
       key: key,
       handler: listener
     }
-    if ( immediate ) {
+    if ( immediate && this.get( key ) !== undefined ) {
       listener( this.get( key ) )
     }
     return () => {

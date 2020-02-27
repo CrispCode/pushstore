@@ -196,7 +196,7 @@ describe( 'PushStore', () => {
       instance.set( 'name2', { name21: 'new' } )
     } )
 
-    it( 'should call the handler if imediate is set even if the value is not defined', ( next ) => {
+    it( 'should call the handler if imediate is set but only if value was defined', ( next ) => {
       let instance = store.create()
       let calls = 0
       let correct = true
@@ -209,11 +209,6 @@ describe( 'PushStore', () => {
             }
             break
           case 2:
-            if ( value !== undefined ) {
-              correct = false
-            }
-            break
-          case 3:
             if ( value !== 'last' ) {
               correct = false
             }
