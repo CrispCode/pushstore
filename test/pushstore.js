@@ -1,21 +1,21 @@
 /* globals describe, it */
 
-const pushstore = require( './../src/store.js' )
+const store = require( './../src/store.js' )
 const assert = require( 'assert' )
 
 describe( 'PushStore', () => {
   describe( '# PushStore.create()', () => {
     it( 'should create a new instance of PushStore', () => {
-      let instance = pushstore.create()
+      let instance = store.create()
       assert.ok( instance.constructor.name === 'Store' )
     } )
 
     it( 'should create a new instance of PushStore with different data then the singleton', () => {
-      pushstore.set( 'test', 'value1' )
-      let instance = pushstore.create()
+      store.set( 'test', 'value1' )
+      let instance = store.create()
       instance.set( 'test', 'value2' )
-      assert.ok( instance.get( 'test' ) !== pushstore.get( 'test' ) )
-      pushstore.set( 'test', undefined )
+      assert.ok( instance.get( 'test' ) !== store.get( 'test' ) )
+      store.set( 'test', undefined )
     } )
 
     it( 'should allow accept an object as it\'s initial data', () => {
@@ -25,7 +25,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       assert.ok( instance.get( 'name1' ) === data.name1 && instance.get( 'name2.name21' ) === data.name2.name21 )
     } )
   } )
@@ -38,7 +38,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       assert.ok( instance.get( 'name1' ) === data.name1 )
     } )
 
@@ -49,7 +49,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       assert.ok( instance.get( 'name2.name21' ) === data.name2.name21 )
     } )
 
@@ -60,7 +60,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       let parent = instance.get()
       assert.ok( parent.name2.name21 === 'value 21' )
     } )
@@ -68,19 +68,19 @@ describe( 'PushStore', () => {
 
   describe( '# PushStore.set()', () => {
     it( 'should set the value of a property based on a key', () => {
-      let instance = pushstore.create()
+      let instance = store.create()
       instance.set( 'name1', 'value 1' )
       assert.ok( instance.get( 'name1' ) === 'value 1' )
     } )
 
     it( 'should set the value of a sub property based on a key and using splitters', () => {
-      let instance = pushstore.create()
+      let instance = store.create()
       instance.set( 'name1.name2.name3', 'value 123' )
       assert.ok( instance.get( 'name1.name2.name3' ) === 'value 123' )
     } )
 
     it( 'should set the value of a sub property based on a key and using splitters, and be able to retrieve part way', () => {
-      let instance = pushstore.create()
+      let instance = store.create()
       instance.set( 'name1.name2.name3', 'value 123' )
       let parent = instance.get( 'name1.name2' )
       assert.ok( parent.name3 === 'value 123' )
@@ -95,7 +95,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       instance.on( 'name3', ( value ) => {
         assert.ok( value === 'value 3' && instance.get( 'name3' ) === 'value 3' )
         next()
@@ -110,7 +110,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       instance.on( 'name2.name21', ( value ) => {
         assert.ok( value === 'value 21' && instance.get( 'name2.name21' ) === 'value 21' )
         next()
@@ -124,7 +124,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       let calls = 0
       instance.on( 'name2.name21', ( value ) => {
         calls++
@@ -137,7 +137,7 @@ describe( 'PushStore', () => {
     } )
 
     it( 'should remove the listener if the returned function is called', ( next ) => {
-      let instance = pushstore.create()
+      let instance = store.create()
       instance.set( 'name', 'value1' )
       let calls = 0
       let kill = instance.on( 'name', () => {
@@ -162,7 +162,7 @@ describe( 'PushStore', () => {
     } )
 
     it( 'should remain active even if the property no longer exists', ( next ) => {
-      let instance = pushstore.create()
+      let instance = store.create()
       instance.set( 'name', 'value1' )
       let calls = 0
       instance.on( 'name', ( value ) => {
@@ -183,7 +183,7 @@ describe( 'PushStore', () => {
           name21: 'value 21'
         }
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       let calls = 0
       instance.on( 'name2.name21', ( value ) => {
         calls++
@@ -197,7 +197,7 @@ describe( 'PushStore', () => {
     } )
 
     it( 'should call the handler if imediate is set even if the value is not defined', ( next ) => {
-      let instance = pushstore.create()
+      let instance = store.create()
       let calls = 0
       let correct = true
       instance.on( 'name', ( value ) => {
@@ -230,7 +230,7 @@ describe( 'PushStore', () => {
       let data = {
         name: 'value'
       }
-      let instance = pushstore.create( data )
+      let instance = store.create( data )
       let handler1called = 0
       let handler1correct = true
       instance.on( 'name', ( value ) => {
