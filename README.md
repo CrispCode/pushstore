@@ -58,7 +58,7 @@ It gives the user the ability to be notified on specific changes done to the sto
 
     // You can also get rid of concurency by using setting the immediate parameter to true when binding the listener
     store.set( 'foo', 'bar' )
-    let _unregister2 = store.set( 'foo', ( value ) => {
+    let _unregister2 = store.in( 'foo', ( value ) => {
         console.log( value ) // This will return 'bar' on first call, and 'bar2' on second call
     }, true ) // This will call the listener immediatly upon binding with the current value
     store.set( 'foo', 'bar2' )
