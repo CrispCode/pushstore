@@ -67,8 +67,13 @@ class Store {
         data.handler( value )
       } else {
         // Check sub properties in case the value added was an object
-        let suffix = data.key.substring( key.length )
-        if ( suffix.substring( 0, 1 ) === splitter ) {
+
+        // Go down the tree
+        if ( data.key.substring( 0, key.length ) === key ) {
+          data.handler( this.get( data.key ) )
+        }
+        // Go up the tree
+        if ( key.substring( 0, data.key.length ) === data.key ) {
           data.handler( this.get( data.key ) )
         }
       }

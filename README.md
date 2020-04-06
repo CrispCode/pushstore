@@ -48,21 +48,36 @@ It gives the user the ability to be notified on specific changes done to the sto
     store.set( 'key1', 'value1' )
     store.set( 'key2.key21', 'value21' )
     store.set( 'key2.key22', 'value22' )
-
     let _unregister1 = store.on( 'key2.key21', ( value ) => {
         console.log( value ) // Will return 'new value'
     } )
-
     store.set( 'key2.key21', 'new value' )
     _unregister1() // This will unregister a listener
 
     // You can also get rid of concurency by using setting the immediate parameter to true when binding the listener
     store.set( 'foo', 'bar' )
-    let _unregister2 = store.in( 'foo', ( value ) => {
+    let _unregister2 = store.on( 'foo', ( value ) => {
         console.log( value ) // This will return 'bar' on first call, and 'bar2' on second call
     }, true ) // This will call the listener immediatly upon binding with the current value
     store.set( 'foo', 'bar2' )
     _unregister2() // This will unregister a listener
+
+    // When a property changes, all its children and parent listeners will be triggered
+    let _unregister1 = store.on( 'key1', ( value ) => {
+        console.log( value ) // Will return 'new value'
+    } )
+    let _unregister2 = store.on( 'key1.key11', ( value ) => {
+        console.log( value ) // Will return 'new value'
+    } )
+    let _unregister3 = store.on( 'key1.key11.key111', ( value ) => {
+        console.log( value ) // Will return 'new value'
+    } )
+
+    store.set('key1.key11', 'foo' )
+
+    _unregister1() // This will unregister a listener
+    _unregister2() // This will unregister a listener
+    _unregister3() // This will unregister a listener
 ```
 
 #### Details & Caveats:

@@ -263,5 +263,47 @@ describe( 'PushStore', () => {
         next()
       }, 100 )
     } )
+
+    it( 'should all parent and children handlers', ( next ) => {
+      let data = {
+        calls: {
+          1: 0,
+          2: 0,
+          3: 0
+        },
+        name2: {
+          name21: 'value 21',
+          name22: {
+            name221: 'value 221'
+          }
+        }
+      }
+      let instance = store.create( data )
+
+      instance.on( 'name2', ( value ) => {
+        if ( value.name22.name221 === 'new' ) {
+          instance.set( 'calls.1', instance.get( 'calls.1' ) + 1 )
+        }
+      } )
+      instance.on( 'name2.name22', ( value ) => {
+        if ( value.name221 === 'new' ) {
+          instance.set( 'calls.2', instance.get( 'calls.2' ) + 1 )
+        }
+      } )
+      instance.on( 'name2.name22.name221', ( value ) => {
+        if ( value === 'new' ) {
+          instance.set( 'calls.3', instance.get( 'calls.3' ) + 1 )
+        }
+      } )
+
+      instance.on( 'calls', ( calls ) => {
+        if ( calls[ 1 ] === 1 && calls[ 2 ] === 1 && calls[ 3 ] === 1 ) {
+          assert.ok( true )
+          next()
+        }
+      } )
+
+      instance.set( 'name2.name22', { name221: 'new' } )
+    } )
   } )
 } )
