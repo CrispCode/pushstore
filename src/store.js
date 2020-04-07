@@ -69,11 +69,11 @@ class Store {
         // Check sub properties in case the value added was an object
 
         // Go down the tree
-        if ( data.key.substring( 0, key.length ) === key ) {
+        if ( data.key.substring( 0, key.length + 1 ) === key + splitter ) {
           data.handler( this.get( data.key ) )
         }
         // Go up the tree
-        if ( key.substring( 0, data.key.length ) === data.key ) {
+        if ( key.substring( 0, data.key.length + 1 ) === data.key + splitter ) {
           data.handler( this.get( data.key ) )
         }
       }

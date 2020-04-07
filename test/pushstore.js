@@ -305,5 +305,45 @@ describe( 'PushStore', () => {
 
       instance.set( 'name2.name22', { name221: 'new' } )
     } )
+
+    it( 'should all parent and children handlers but with a match on splitter', ( next ) => {
+      let data = {
+        calls: {
+          1: 0,
+          2: 0,
+          3: 0
+        },
+        a: {
+          a: 'test 1',
+          aa: 'test 2'
+        }
+      }
+      let instance = store.create( data )
+
+      instance.on( 'a', ( value ) => {
+        if ( value.a === 'new' ) {
+          instance.set( 'calls.1', instance.get( 'calls.1' ) + 1 )
+        }
+      } )
+      instance.on( 'a.a', ( value ) => {
+        if ( value === 'new' ) {
+          instance.set( 'calls.2', instance.get( 'calls.2' ) + 1 )
+        }
+      } )
+      instance.on( 'a.aa', ( value ) => {
+        if ( value === 'new' ) {
+          instance.set( 'calls.3', instance.get( 'calls.3' ) + 1 )
+        }
+      } )
+
+      instance.on( 'calls', ( calls ) => {
+        if ( calls[ 1 ] === 1 && calls[ 2 ] === 1 && calls[ 3 ] === 0 ) {
+          assert.ok( true )
+          next()
+        }
+      } )
+
+      instance.set( 'a.a', 'new' )
+    } )
   } )
 } )
