@@ -63,6 +63,10 @@ class Store {
     setter( key, value, this.__data, splitter )
 
     loop( this.__listeners, ( data ) => {
+      // If the listener was destroyed while looping
+      if ( !data ) {
+        return
+      }
       if ( data.key === key ) {
         data.handler( value )
       } else {

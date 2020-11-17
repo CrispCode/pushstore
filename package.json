@@ -1,6 +1,6 @@
 {
   "name": "@crispcode/pushstore",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A store library with push notification on changes",
   "author": "Crisp Code ( contact@crispcode.ro )",
   "keywords": [
@@ -31,10 +31,10 @@
     "url": "https://github.com/CrispCode/pushstore/issues"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
-    "mocha": "^8.0.1"
+    "eslint": "^7.13.0",
+    "mocha": "^8.2.1"
   },
-  "type": "module",
+  "type": "commonjs",
   "main": "./index.cjs",
   "exports": {
     "require": "./index.cjs",
